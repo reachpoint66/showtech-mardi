@@ -7,22 +7,22 @@
     <link rel="stylesheet" href="styles/style.css">
     <style>
         body {
-            font-size: 22px;
+            font-size: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             margin: 0;
-            padding: 30px;
+            padding: 20px;
         }
         h1 {
-            font-size: 26px;
-            margin-bottom: 20px;
+            font-size: 24px;
+            margin-bottom: 15px;
         }
         label, button, select {
-            font-size: 20px;
-            margin-bottom: 15px;
+            font-size: 18px;
+            margin-bottom: 12px;
         }
         .canvas-container {
             width: 100%;
@@ -38,15 +38,15 @@
             background-color: #28a745;
             color: white;
             border: none;
-            padding: 15px;
-            font-size: 18px;
+            padding: 12px;
+            font-size: 16px;
             border-radius: 5px;
             width: 100%;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             cursor: pointer;
         }
         select, input {
-            padding: 10px;
+            padding: 8px;
             font-size: 16px;
         }
         .button-container {
@@ -56,14 +56,14 @@
             max-width: 400px;
         }
         footer {
-            margin-top: 20px;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
     <h1>Selamat Hari Raya!</h1>
 
-    <label for="frameSelect">Choose Frame:</label>
+    <label for="frameSelect">Choose a Frame:</label>
     <select id="frameSelect">
         <option value="rayaframe1.png">Frame 1</option>
         <option value="rayaframe2.png">Frame 2</option>
@@ -75,9 +75,11 @@
     </select>
 
     <div class="button-container">
-        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-        <button id="fileButton">Choose File</button>
-        <button id="captureButton">Use Camera</button>
+        <input type="file" id="fileUpload" accept="image/*" style="display: none;">
+        <button id="fileButton">Upload from Gallery</button>
+        
+        <input type="file" id="cameraUpload" accept="image/*" capture="environment" style="display: none;">
+        <button id="cameraButton">Take a Photo</button>
     </div>
 
     <div class="canvas-container">
@@ -93,9 +95,10 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const frameSelect = document.getElementById("frameSelect");
-            const imageUpload = document.getElementById("imageUpload");
+            const fileUpload = document.getElementById("fileUpload");
             const fileButton = document.getElementById("fileButton");
-            const captureButton = document.getElementById("captureButton");
+            const cameraUpload = document.getElementById("cameraUpload");
+            const cameraButton = document.getElementById("cameraButton");
             const canvas = document.getElementById("canvas");
             const ctx = canvas.getContext("2d");
             const downloadButton = document.getElementById("downloadButton");
@@ -125,17 +128,15 @@
             });
 
             fileButton.addEventListener("click", function() {
-                imageUpload.accept = "image/*";
-                imageUpload.click();
+                fileUpload.click();
             });
 
-            captureButton.addEventListener("click", function() {
-                imageUpload.accept = "image/*;capture=camera";
-                imageUpload.click();
+            cameraButton.addEventListener("click", function() {
+                cameraUpload.click();
             });
 
-            imageUpload.addEventListener("change", function(event) {
-                const file = event.target.files[0];
+            function handleImageUpload(inputElement) {
+                const file = inputElement.files[0];
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
@@ -143,6 +144,14 @@
                     };
                     reader.readAsDataURL(file);
                 }
+            }
+
+            fileUpload.addEventListener("change", function() {
+                handleImageUpload(this);
+            });
+
+            cameraUpload.addEventListener("change", function() {
+                handleImageUpload(this);
             });
 
             downloadButton.addEventListener("click", function() {
