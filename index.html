@@ -16,9 +16,13 @@
             margin: 0;
             padding: 30px;
         }
-        h1, label, button, select {
+        h1 {
             font-size: 26px;
             margin-bottom: 20px;
+        }
+        label, button, select {
+            font-size: 20px;
+            margin-bottom: 15px;
         }
         .canvas-container {
             width: 100%;
@@ -35,14 +39,21 @@
             color: white;
             border: none;
             padding: 15px;
-            font-size: 20px;
+            font-size: 18px;
             border-radius: 5px;
             width: 100%;
             margin-bottom: 10px;
+            cursor: pointer;
         }
         select, input {
             padding: 10px;
-            font-size: 18px;
+            font-size: 16px;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 400px;
         }
         footer {
             margin-top: 20px;
@@ -50,36 +61,40 @@
     </style>
 </head>
 <body>
-    <h1>Selamat Hari Raya Aidilfitri!<br> Sila Pilih Bingkai dan Muat Naik Gambar</h1>
+    <h1>Selamat Hari Raya!</h1>
 
-    <label for="frameSelect">Pilih Bingkai:</label>
+    <label for="frameSelect">Choose Frame:</label>
     <select id="frameSelect">
-        <option value="rayaframe1.png">Bingkai 1</option>
-        <option value="rayaframe2.png">Bingkai 2</option>
-        <option value="rayaframe3.png">Bingkai 3</option>
-        <option value="rayaframe4.png">Bingkai 4</option>
-        <option value="rayaframe5.png">Bingkai 5</option>
-        <option value="rayaframe6.png">Bingkai 6</option>
-        <option value="rayaframe7.png">Bingkai 7</option>
+        <option value="rayaframe1.png">Frame 1</option>
+        <option value="rayaframe2.png">Frame 2</option>
+        <option value="rayaframe3.png">Frame 3</option>
+        <option value="rayaframe4.png">Frame 4</option>
+        <option value="rayaframe5.png">Frame 5</option>
+        <option value="rayaframe6.png">Frame 6</option>
+        <option value="rayaframe7.png">Frame 7</option>
     </select>
 
-    <input type="file" id="imageUpload" accept="image/*">
-    <button id="captureButton">Gunakan Kamera</button>
+    <div class="button-container">
+        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+        <button id="fileButton">Choose File</button>
+        <button id="captureButton">Use Camera</button>
+    </div>
 
     <div class="canvas-container">
         <canvas id="canvas" width="1080" height="1080"></canvas>
     </div>
 
-    <button id="downloadButton">Muat Turun</button>
+    <button id="downloadButton">Download</button>
 
     <footer>
-        <p>Dibangunkan oleh <a href="https://pickproevents.com/" target="_blank">PickPro Events</a></p>
+        <p>Developed by <a href="https://pickproevents.com/" target="_blank">PickPro Events</a></p>
     </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const frameSelect = document.getElementById("frameSelect");
             const imageUpload = document.getElementById("imageUpload");
+            const fileButton = document.getElementById("fileButton");
             const captureButton = document.getElementById("captureButton");
             const canvas = document.getElementById("canvas");
             const ctx = canvas.getContext("2d");
@@ -109,6 +124,16 @@
                 drawImageOnCanvas(this.value, null);
             });
 
+            fileButton.addEventListener("click", function() {
+                imageUpload.accept = "image/*";
+                imageUpload.click();
+            });
+
+            captureButton.addEventListener("click", function() {
+                imageUpload.accept = "image/*;capture=camera";
+                imageUpload.click();
+            });
+
             imageUpload.addEventListener("change", function(event) {
                 const file = event.target.files[0];
                 if (file) {
@@ -118,10 +143,6 @@
                     };
                     reader.readAsDataURL(file);
                 }
-            });
-
-            captureButton.addEventListener("click", function() {
-                imageUpload.click();
             });
 
             downloadButton.addEventListener("click", function() {
