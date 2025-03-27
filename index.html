@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Frame Raya</title>
+    <title>Raya Frame</title>
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
     <h1>Selamat Hari Raya! Pilih Bingkai dan Muat Naik Gambar</h1>
+
     <label for="frameSelect">Pilih Bingkai:</label>
     <select id="frameSelect">
         <option value="rayaframe1.png">Bingkai 1</option>
@@ -18,57 +19,84 @@
         <option value="rayaframe6.png">Bingkai 6</option>
         <option value="rayaframe7.png">Bingkai 7</option>
     </select>
-    <br><br>
-    <input type="file" id="uploadImage" accept="image/*">
-    <br><br>
-    <canvas id="photoCanvas" width="1080" height="1080"></canvas>
-    <br><br>
-    <button id="downloadBtn">Muat Turun Gambar</button>
-    
+
+    <input type="file" id="imageUpload" accept="image/*">
+    <button id="captureButton">Gunakan Kamera</button>
+
+    <div class="canvas-container">
+        <canvas id="canvas" width="1080" height="1080"></canvas>
+    </div>
+
+    <button id="downloadButton">Muat Turun</button>
+
+    <footer>
+        <p>Dibangunkan oleh <a href="https://pickproevents.com/" target="_blank">PickPro Events</a></p>
+    </footer>
+
     <script>
-        const canvas = document.getElementById("photoCanvas");
-        const ctx = canvas.getContext("2d");
-        const frameSelect = document.getElementById("frameSelect");
-        const uploadImage = document.getElementById("uploadImage");
-        const downloadBtn = document.getElementById("downloadBtn");
-        
-        let frameImage = new Image();
-        let userImage = new Image();
-        
-        function drawCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            if (userImage.src) {
-                ctx.drawImage(userImage, 0, 0, canvas.width, canvas.height);
-            }
-            
-            ctx.drawImage(frameImage, 0, 0, canvas.width, canvas.height);
-        }
-        
-        frameSelect.addEventListener("change", function() {
-            frameImage.src = "assets/" + this.value;
-        });
-        
-        frameImage.onload = drawCanvas;
-        frameImage.src = "assets/rayaframe1.png"; 
-        
-        uploadImage.addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    userImage.onload = drawCanvas;
-                    userImage.src = e.target.result;
+        document.addEventListener("DOMContentLoaded", function() {
+            const frameSelect = document.getElementById("frameSelect");
+            const imageUpload = document.getElementById("imageUpload");
+            const captureButton = document.getElementById("captureButton");
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            const downloadButton = document.getElementById("downloadButton");
+
+            function drawImageOnCanvas(imageSrc, photoSrc) {
+                const frameImg = new Image();
+                frameImg.src = `assets/${imageSrc}`;
+                frameImg.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+                    if (photoSrc) {
+                        const userImg = new Image();
+                        userImg.src = photoSrc;
+                        userImg.onload = function() {
+                            const aspectRatio = userImg.width / userImg.height;
+                            let newWidth, newHeight;
+                            if (aspectRatio > 1) {
+                                newWidth = canvas.width;
+                                newHeight = canvas.width / aspectRatio;
+                            } else {
+                                newHeight = canvas.height;
+                                newWidth = canvas.height * aspectRatio;
+                            }
+                            const xOffset = (canvas.width - newWidth) / 2;
+                            const yOffset = (canvas.height - newHeight) / 2;
+                            ctx.drawImage(userImg, xOffset, yOffset, newWidth, newHeight);
+                            ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+                        }
+                    }
                 };
-                reader.readAsDataURL(file);
             }
-        });
-        
-        downloadBtn.addEventListener("click", function() {
-            const link = document.createElement("a");
-            link.download = "photo_frame.png";
-            link.href = canvas.toDataURL("image/png");
-            link.click();
+
+            frameSelect.addEventListener("change", function() {
+                drawImageOnCanvas(this.value, null);
+            });
+
+            imageUpload.addEventListener("change", function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        drawImageOnCanvas(frameSelect.value, e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            captureButton.addEventListener("click", function() {
+                imageUpload.click();
+            });
+
+            downloadButton.addEventListener("click", function() {
+                const link = document.createElement("a");
+                link.download = "RayaFrame.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+
+            drawImageOnCanvas(frameSelect.value, null);
         });
     </script>
 </body>
