@@ -2,9 +2,32 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Raya Frame</title>
     <link rel="stylesheet" href="styles/style.css">
+    <style>
+        body {
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0;
+            padding: 10px;
+        }
+        h1, label, button, select {
+            font-size: 20px;
+        }
+        .canvas-container {
+            width: 100%;
+            max-width: 400px;
+        }
+        canvas {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <h1>Selamat Hari Raya! Pilih Bingkai dan Muat Naik Gambar</h1>
