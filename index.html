@@ -1,172 +1,133 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Raya Frame</title>
-    <link rel="stylesheet" href="styles/style.css">
-    <style>
-        body {
-            font-size: 22px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            margin: 0;
-            padding: 30px;
-        }
-        h1 {
-            font-size: 26px;
-            margin-bottom: 20px;
-        }
-        label, button, select {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        .canvas-container {
-            width: 100%;
-            max-width: 400px;
-            margin-top: 20px;
-        }
-        canvas {
-            width: 100%;
-            height: auto;
-            background-color: #fff;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 15px;
-            font-size: 18px;
-            border-radius: 5px;
-            width: 100%;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-        select, input {
-            padding: 10px;
-            font-size: 16px;
-        }
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 400px;
-        }
-        footer {
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .logo {
-            height: 40px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Raya Frame</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <style>
+    body {
+      font-size: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin: 0;
+      padding: 30px;
+    }
+    h1, label, button, select {
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+    .canvas-container {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 20px;
+    }
+    canvas {
+      width: 100%;
+      height: auto;
+      background-color: #fff;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 18px;
+      border-radius: 5px;
+      width: 100%;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    select, input {
+      padding: 10px;
+      font-size: 16px;
+    }
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 400px;
+    }
+    footer {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .logo {
+      height: 40px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Selamat Hari Raya Aidilfitri!</h1>
+  <h1>Selamat Hari Raya Aidilfitri!</h1>
 
-    <label for="frameSelect">Choose Frame:</label>
-    <select id="frameSelect">
-        <option value="rayaframe1.png">Frame 1</option>
-        <option value="rayaframe2.png">Frame 2</option>
-        <option value="rayaframe3.png">Frame 3</option>
-        <option value="rayaframe4.png">Frame 4</option>
-        <option value="rayaframe5.png">Frame 5</option>
-        <option value="rayaframe6.png">Frame 6</option>
-        <option value="rayaframe7.png">Frame 7</option>
-        <option value="rayaframe7.png">Frame 8</option>
-        <option value="rayaframe7.png">Frame 9</option>
-        <option value="rayaframe7.png">Frame 10</option>
-    </select>
+  <label for="frameSelect">Choose Frame:</label>
+  <select id="frameSelect">
+    <option value="rayaframe1.png">Frame 1</option>
+    <option value="rayaframe2.png">Frame 2</option>
+    <option value="rayaframe3.png">Frame 3</option>
+    <option value="rayaframe4.png">Frame 4</option>
+    <option value="rayaframe5.png">Frame 5</option>
+    <option value="rayaframe6.png">Frame 6</option>
+    <option value="rayaframe7.png">Frame 7</option>
+    <option value="rayaframe8.png">Frame 8</option>
+    <option value="rayaframe9.png">Frame 9</option>
+    <option value="rayaframe10.png">Frame 10</option>
+  </select>
 
-    <div class="button-container">
-        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-        <button id="fileButton">Choose from Gallery</button>
-        <button id="captureButton">Take a Photo</button>
-    </div>
+  <div class="button-container">
+    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+    <button id="fileButton">Choose from Gallery</button>
+    <button id="captureButton">Take a Photo</button>
+  </div>
 
-    <div class="canvas-container">
-        <canvas id="canvas" width="1080" height="1080"></canvas>
-    </div>
+  <div class="canvas-container">
+    <canvas id="canvas" width="1080" height="1080"></canvas>
+  </div>
 
-    <button id="downloadButton">Download</button>
+  <button id="downloadButton">Download</button>
 
-    <footer>
-        <p>Developed by <a href="https://pickproevents.com/" target="_blank">PickPro Events</a></p>
-        <img src="assets/pickpro_logo.png" alt="PickPro Events" class="logo">
-    </footer>
+  <footer>
+    <p>Developed by <a href="https://pickproevents.com/" target="_blank">PickPro Events</a></p>
+    <img src="assets/pickpro_logo.png" alt="PickPro Events" class="logo">
+  </footer>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const frameSelect = document.getElementById("frameSelect");
-            const imageUpload = document.getElementById("imageUpload");
-            const fileButton = document.getElementById("fileButton");
-            const captureButton = document.getElementById("captureButton");
-            const canvas = document.getElementById("canvas");
-            const ctx = canvas.getContext("2d");
-            const downloadButton = document.getElementById("downloadButton");
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const frameSelect = document.getElementById("frameSelect");
+      const imageUpload = document.getElementById("imageUpload");
+      const fileButton = document.getElementById("fileButton");
+      const captureButton = document.getElementById("captureButton");
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      const downloadButton = document.getElementById("downloadButton");
 
-            function drawImageOnCanvas(imageSrc, photoSrc) {
-                const frameImg = new Image();
-                frameImg.src = `assets/${imageSrc}`;
-                frameImg.onload = function() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
-                    if (photoSrc) {
-                        const userImg = new Image();
-                        userImg.src = photoSrc;
-                        userImg.onload = function() {
-                            const size = Math.min(userImg.width, userImg.height);
-                            const sx = (userImg.width - size) / 2;
-                            const sy = (userImg.height - size) / 2;
-                            ctx.drawImage(userImg, sx, sy, size, size, 0, 0, canvas.width, canvas.height);
-                            ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
-                        };
-                    }
-                };
-            }
-
-            frameSelect.addEventListener("change", function() {
-                drawImageOnCanvas(this.value, null);
-            });
-
-            fileButton.addEventListener("click", function() {
-                imageUpload.accept = "image/*";
-                imageUpload.capture = "";
-                imageUpload.click();
-            });
-
-            captureButton.addEventListener("click", function() {
-                imageUpload.accept = "image/*";
-                imageUpload.setAttribute("capture", "user");
-                imageUpload.click();
-            });
-
-            imageUpload.addEventListener("change", function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        drawImageOnCanvas(frameSelect.value, e.target.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            downloadButton.addEventListener("click", function() {
-                const link = document.createElement("a");
-                link.download = "RayaFrame.png";
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-            });
-
-            drawImageOnCanvas(frameSelect.value, null);
-        });
-    </script>
-</body>
-</html>
+      // Fungsi untuk melukis gambar pada canvas
+      function drawImageOnCanvas(frameFile, photoSrc) {
+        const frameImg = new Image();
+        frameImg.src = `assets/${frameFile}`;
+        // Jika gagal dimuatkan, log error
+        frameImg.onerror = function() {
+          console.error(`Failed to load frame image: assets/${frameFile}`);
+        };
+        frameImg.onload = function() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // Lukis bingkai terlebih dahulu
+          ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+          if (photoSrc) {
+            const userImg = new Image();
+            userImg.src = photoSrc;
+            userImg.onload = function() {
+              // Kira skala supaya gambar muat 1:1 tanpa distorsi
+              const scale = Math.min(canvas.width / userImg.width, canvas.height / userImg.height);
+              const newWidth = userImg.width * scale;
+              const newHeight = userImg.height * scale;
+              const xOffset = (canvas.width - newWidth) / 2;
+              const yOffset = (canvas.height - newHeight) / 2;
+              ctx.drawImage(userImg, xOffset, yOffset, newWidth, newHeight);
+              // Lukis bingkai sekali lagi sebagai overlay\n              ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);\n            };\n          }\n        };\n      }\n\n      // Apabila pilihan bingkai berubah\n      frameSelect.addEventListener(\"change\", function() {\n        drawImageOnCanvas(this.value, null);\n      });\n\n      // Butang untuk pilih gambar dari gallery\n      fileButton.addEventListener(\"click\", function() {\n        imageUpload.accept = \"image/*\";\n        imageUpload.removeAttribute(\"capture\");\n        imageUpload.click();\n      });\n\n      // Butang untuk ambil gambar dari kamera (gunakan capture attribute untuk kamera)\n      captureButton.addEventListener(\"click\", function() {\n        imageUpload.accept = \"image/*\";\n        // Set attribute capture ke \"environment\" untuk kamera belakang; tukar ke \"user\" untuk kamera hadapan jika diperlukan\n        imageUpload.setAttribute(\"capture\", \"environment\");\n        imageUpload.click();\n      });\n\n      imageUpload.addEventListener(\"change\", function(event) {\n        const file = event.target.files[0];\n        if (file) {\n          const reader = new FileReader();\n          reader.onload = function(e) {\n            drawImageOnCanvas(frameSelect.value, e.target.result);\n          };\n          reader.readAsDataURL(file);\n        }\n      });\n\n      downloadButton.addEventListener(\"click\", function() {\n        const link = document.createElement(\"a\");\n        link.download = \"RayaFrame.png\";\n        link.href = canvas.toDataURL(\"image/png\");\n        link.click();\n      });\n\n      // Lukis bingkai awal\n      drawImageOnCanvas(frameSelect.value, null);\n    });\n  </script>\n</body>\n</html>"}]}
