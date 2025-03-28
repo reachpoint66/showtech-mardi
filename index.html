@@ -6,6 +6,7 @@
   <title>Raya Frame</title>
   <link rel="stylesheet" href="styles/style.css">
   <style>
+    /* Gaya asas dan responsif */
     body {
       font-size: 22px;
       display: flex;
@@ -17,18 +18,17 @@
       padding: 30px;
     }
     h1 {
-      font-size: 26px;
+      font-family: 'Sprite Gaffiti', sans-serif;  /* Pastikan font ini tersedia, atau ganti dengan font lain */
+      color: purple;
+      font-size: 32px;
       margin-bottom: 20px;
-      /* Warna ungu untuk teks Selamat Hari Raya Aidilfitri */
-      color: #800080;
     }
     label, button, select {
-      font-size: 18px;
+      font-size: 20px;
       margin-bottom: 10px;
     }
-    /* Gaya select (dropdown) supaya latar belakang ungu dan teks putih */
     select {
-      background-color: #800080;
+      background-color: purple;
       color: white;
       border: none;
       border-radius: 5px;
@@ -45,7 +45,7 @@
       background-color: #fff;
     }
     button {
-      background-color: #28a745;
+      background-color: purple;
       color: white;
       border: none;
       padding: 15px;
@@ -55,7 +55,10 @@
       margin-bottom: 10px;
       cursor: pointer;
     }
-    /* Sekiranya anda ingin seragamkan butang, anda boleh ubah warna latar belakang butang di sini. */
+    select, input {
+      padding: 10px;
+      font-size: 16px;
+    }
     .button-container {
       display: flex;
       flex-direction: column;
@@ -71,14 +74,11 @@
       font-size: 18px;
     }
     footer a {
-      color: #800080; /* Warna ungu untuk link PickPro Events */
+      color: purple;
       text-decoration: none;
     }
     footer a:hover {
       text-decoration: underline;
-    }
-    .logo {
-      height: 40px;
     }
   </style>
 </head>
@@ -100,8 +100,10 @@
   </select>
 
   <div class="button-container">
+    <!-- Input file untuk memilih gambar dari Gallery -->
     <input type="file" id="imageUpload" accept="image/*" style="display: none;">
     <button id="fileButton">Choose from Gallery</button>
+    <!-- Input file untuk ambil gambar melalui kamera (gunakan capture) -->
     <button id="captureButton">Take a Photo</button>
   </div>
 
@@ -113,7 +115,7 @@
 
   <footer>
     <p>Developed by <a href="https://pickproevents.com/" target="_blank">PickPro Events</a></p>
-    <!-- Jika logo tidak diperlukan lagi, anda boleh padam baris di bawah ini. -->\n    <!--<img src="assets/pickpro_logo.png" alt="PickPro Events" class="logo">-->\n  </footer>
+  </footer>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -128,9 +130,9 @@
       // Fungsi untuk melukis gambar ke dalam canvas
       function drawImageOnCanvas(frameFile, photoSrc) {
         const frameImg = new Image();
-        frameImg.src = `assets/${frameFile}`;
+        frameImg.src = "assets/" + frameFile;
         frameImg.onerror = function() {
-          console.error(`Gagal memuat bingkai: assets/${frameFile}`);
+          console.error(`Failed to load frame image: assets/${frameFile}`);
         };
         frameImg.onload = function() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -140,9 +142,60 @@
             const userImg = new Image();
             userImg.src = photoSrc;
             userImg.onload = function() {
-              // Kira skala untuk memastikan gambar pengguna dipotong menjadi square (1:1) dan memenuhi canvas tanpa distorsi
-              const size = Math.min(userImg.width, userImg.height);
-              const sx = (userImg.width - size) / 2;
-              const sy = (userImg.height - size) / 2;
-              ctx.drawImage(userImg, sx, sy, size, size, 0, 0, canvas.width, canvas.height);
-              // Lukis semula bingkai sebagai overlay\n              ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);\n            };\n          }\n        };\n      }\n\n      // Event: Bila pilihan bingkai berubah\n      frameSelect.addEventListener(\"change\", function() {\n        drawImageOnCanvas(this.value, null);\n      });\n\n      // Event: Butang untuk pilih gambar dari gallery\n      fileButton.addEventListener(\"click\", function() {\n        imageUpload.accept = \"image/*\";\n        imageUpload.removeAttribute(\"capture\");\n        imageUpload.click();\n      });\n\n      // Event: Butang untuk ambil gambar dari kamera\n      captureButton.addEventListener(\"click\", function() {\n        imageUpload.accept = \"image/*\";\n        imageUpload.setAttribute(\"capture\", \"environment\");\n        imageUpload.click();\n      });\n\n      // Event: Bila gambar dimuat naik\n      imageUpload.addEventListener(\"change\", function(event) {\n        const file = event.target.files[0];\n        if (file) {\n          const reader = new FileReader();\n          reader.onload = function(e) {\n            drawImageOnCanvas(frameSelect.value, e.target.result);\n          };\n          reader.readAsDataURL(file);\n        }\n      });\n\n      // Event: Butang untuk muat turun gambar\n      downloadButton.addEventListener(\"click\", function() {\n        const link = document.createElement(\"a\");\n        link.download = \"RayaFrame.png\";\n        link.href = canvas.toDataURL(\"image/png\");\n        link.click();\n      });\n\n      // Lukis bingkai awal\n      drawImageOnCanvas(frameSelect.value, null);\n    });\n  </script>\n</body>\n</html>"}}
+              // Crop gambar agar menjadi square (1:1) tanpa distorsi
+              const minDim = Math.min(userImg.width, userImg.height);
+              const sx = (userImg.width - minDim) / 2;
+              const sy = (userImg.height - minDim) / 2;
+              ctx.drawImage(userImg, sx, sy, minDim, minDim, 0, 0, canvas.width, canvas.height);
+              // Lukis semula bingkai sebagai overlay
+              ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+            };
+          }
+        };
+      }
+
+      // Event: Bila pilihan bingkai berubah
+      frameSelect.addEventListener("change", function() {
+        drawImageOnCanvas(this.value, null);
+      });
+
+      // Event: Butang "Choose from Gallery"
+      fileButton.addEventListener("click", function() {
+        imageUpload.accept = "image/*";
+        imageUpload.removeAttribute("capture");
+        imageUpload.click();
+      });
+
+      // Event: Butang "Take a Photo"
+      captureButton.addEventListener("click", function() {
+        imageUpload.accept = "image/*";
+        imageUpload.setAttribute("capture", "environment");
+        imageUpload.click();
+      });
+
+      // Event: Apabila gambar dimuat naik
+      imageUpload.addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            drawImageOnCanvas(frameSelect.value, e.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Event: Butang "Download"
+      downloadButton.addEventListener("click", function() {
+        const link = document.createElement("a");
+        link.download = "RayaFrame.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+
+      // Lukis bingkai awal
+      drawImageOnCanvas(frameSelect.value, null);
+    });
+  </script>
+</body>
+</html>
