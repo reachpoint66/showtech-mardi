@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Raya Frame</title>
-  <link rel="stylesheet" href="styles/style.css">
+  <!-- Anda boleh letakkan CSS di sini atau rujuk fail CSS berasingan -->
   <style>
     body {
       font-size: 22px;
@@ -31,7 +31,7 @@
       background-color: #fff;
     }
     button {
-      background-color: #28a745;
+      background-color: #420645;
       color: white;
       border: none;
       padding: 15px;
@@ -53,13 +53,7 @@
     }
     footer {
       margin-top: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .logo {
-      height: 40px;
+      text-align: center;
     }
   </style>
 </head>
@@ -81,8 +75,10 @@
   </select>
 
   <div class="button-container">
+    <!-- Input file untuk gallery (tidak menggunakan capture) -->
     <input type="file" id="imageUpload" accept="image/*" style="display: none;">
     <button id="fileButton">Choose from Gallery</button>
+    <!-- Input file untuk kamera, gunakan capture attribute -->
     <button id="captureButton">Take a Photo</button>
   </div>
 
@@ -93,8 +89,7 @@
   <button id="downloadButton">Download</button>
 
   <footer>
-    <p>Developed by <a href="https://pickproevents.com/" target="_blank">PickPro Events</a></p>
-    <img src="assets/pickpro_logo.png" alt="PickPro Events" class="logo">
+    <p>Developed by PickPro Events</p>
   </footer>
 
   <script>
@@ -107,14 +102,10 @@
       const ctx = canvas.getContext("2d");
       const downloadButton = document.getElementById("downloadButton");
 
-      // Fungsi untuk melukis gambar pada canvas
+      // Fungsi untuk melukis gambar ke dalam canvas
       function drawImageOnCanvas(frameFile, photoSrc) {
         const frameImg = new Image();
-        frameImg.src = `assets/${frameFile}`;
-        // Jika gagal dimuatkan, log error
-        frameImg.onerror = function() {
-          console.error(`Failed to load frame image: assets/${frameFile}`);
-        };
+        frameImg.src = "assets/" + frameFile;
         frameImg.onload = function() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           // Lukis bingkai terlebih dahulu
@@ -123,11 +114,62 @@
             const userImg = new Image();
             userImg.src = photoSrc;
             userImg.onload = function() {
-              // Kira skala supaya gambar muat 1:1 tanpa distorsi
-              const scale = Math.min(canvas.width / userImg.width, canvas.height / userImg.height);
-              const newWidth = userImg.width * scale;
-              const newHeight = userImg.height * scale;
-              const xOffset = (canvas.width - newWidth) / 2;
-              const yOffset = (canvas.height - newHeight) / 2;
-              ctx.drawImage(userImg, xOffset, yOffset, newWidth, newHeight);
-              // Lukis bingkai sekali lagi sebagai overlay\n              ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);\n            };\n          }\n        };\n      }\n\n      // Apabila pilihan bingkai berubah\n      frameSelect.addEventListener(\"change\", function() {\n        drawImageOnCanvas(this.value, null);\n      });\n\n      // Butang untuk pilih gambar dari gallery\n      fileButton.addEventListener(\"click\", function() {\n        imageUpload.accept = \"image/*\";\n        imageUpload.removeAttribute(\"capture\");\n        imageUpload.click();\n      });\n\n      // Butang untuk ambil gambar dari kamera (gunakan capture attribute untuk kamera)\n      captureButton.addEventListener(\"click\", function() {\n        imageUpload.accept = \"image/*\";\n        // Set attribute capture ke \"environment\" untuk kamera belakang; tukar ke \"user\" untuk kamera hadapan jika diperlukan\n        imageUpload.setAttribute(\"capture\", \"environment\");\n        imageUpload.click();\n      });\n\n      imageUpload.addEventListener(\"change\", function(event) {\n        const file = event.target.files[0];\n        if (file) {\n          const reader = new FileReader();\n          reader.onload = function(e) {\n            drawImageOnCanvas(frameSelect.value, e.target.result);\n          };\n          reader.readAsDataURL(file);\n        }\n      });\n\n      downloadButton.addEventListener(\"click\", function() {\n        const link = document.createElement(\"a\");\n        link.download = \"RayaFrame.png\";\n        link.href = canvas.toDataURL(\"image/png\");\n        link.click();\n      });\n\n      // Lukis bingkai awal\n      drawImageOnCanvas(frameSelect.value, null);\n    });\n  </script>\n</body>\n</html>"}]}
+              // Ambil dimensi minimum untuk crop gambar menjadi square (1:1)
+              const minDim = Math.min(userImg.width, userImg.height);
+              const sx = (userImg.width - minDim) / 2;
+              const sy = (userImg.height - minDim) / 2;
+              // Lukis gambar pengguna pada canvas dengan skala penuh (1080x1080) agar sama saiz dengan frame
+              ctx.drawImage(userImg, sx, sy, minDim, minDim, 0, 0, canvas.width, canvas.height);
+              // Lukis bingkai sebagai overlay sekali lagi
+              ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+            };
+          }
+        };
+      }
+
+      // Event: Apabila pilihan bingkai berubah
+      frameSelect.addEventListener("change", function() {
+        drawImageOnCanvas(this.value, null);
+      });
+
+      // Event: Butang untuk memilih gambar dari Gallery
+      fileButton.addEventListener("click", function() {
+        imageUpload.accept = "image/*";
+        imageUpload.removeAttribute("capture");
+        imageUpload.click();
+      });
+
+      // Event: Butang untuk ambil gambar dari kamera
+      captureButton.addEventListener("click", function() {
+        imageUpload.accept = "image/*";
+        // Gunakan attribute capture untuk membuka kamera; gunakan "environment" untuk kamera belakang
+        imageUpload.setAttribute("capture", "environment");
+        imageUpload.click();
+      });
+
+      // Event: Apabila gambar dimuat naik
+      imageUpload.addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            drawImageOnCanvas(frameSelect.value, e.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Event: Butang untuk muat turun gambar akhir
+      downloadButton.addEventListener("click", function() {
+        const link = document.createElement("a");
+        link.download = "RayaFrame.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+
+      // Lukis bingkai awal
+      drawImageOnCanvas(frameSelect.value, null);
+    });
+  </script>
+</body>
+</html>
