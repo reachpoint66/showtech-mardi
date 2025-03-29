@@ -6,6 +6,7 @@
   <title>Raya Frame</title>
   <link rel="stylesheet" href="styles/style.css">
   <style>
+    /* Gaya asas dan responsif */
     body {
       font-size: 22px;
       display: flex;
@@ -16,9 +17,22 @@
       margin: 0;
       padding: 30px;
     }
-    h1, label, button, select {
-      font-size: 26px;
+    h1 {
+      font-family: 'Sprite Gaffiti', sans-serif;  /* Pastikan font ini tersedia, atau ganti dengan font lain */
+      color: purple;
+      font-size: 32px;
       margin-bottom: 20px;
+    }
+    label, button, select {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    select {
+      background-color: purple;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
     }
     .canvas-container {
       width: 100%;
@@ -66,19 +80,11 @@
     footer a:hover {
       text-decoration: underline;
     }
-    /* Contoh: Jika anda ingin menukar warna butang dropdown ke ungu, boleh tambahkan gaya berikut: */
-    select {
-      background-color: purple;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 10px;
-    }
   </style>
 </head>
 <body>
   <h1>Selamat Hari Raya Aidilfitri!</h1>
-  
+
   <label for="frameSelect">Choose Frame:</label>
   <select id="frameSelect">
     <option value="rayaframe1.png">Frame 1</option>
@@ -97,23 +103,23 @@
     <option value="rayaframe14.png">Frame 14</option>
     <option value="rayaframe15.png">Frame 15</option>
   </select>
-  
+
   <div class="button-container">
     <input type="file" id="imageUpload" accept="image/*" style="display: none;">
     <button id="fileButton">Choose from Gallery</button>
     <button id="captureButton">Take a Photo</button>
   </div>
-  
+
   <div class="canvas-container">
     <canvas id="canvas" width="1080" height="1080"></canvas>
   </div>
-  
+
   <button id="downloadButton">Download</button>
-  
+
   <footer>
     <p>Developed by <a href="https://pickproevents.com/" target="_blank">PickPro Events</a></p>
   </footer>
-  
+
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const frameSelect = document.getElementById("frameSelect");
@@ -127,31 +133,32 @@
       function drawImageOnCanvas(frameFile, photoSrc) {
         const frameImg = new Image();
         frameImg.src = "assets/" + frameFile;
-        frameImg.onerror = function() {
-          console.error(`Failed to load frame image: assets/${frameFile}`);
-        };
         frameImg.onload = function() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-          // Lukis bingkai terlebih dahulu
           ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
           if (photoSrc) {
             const userImg = new Image();
             userImg.src = photoSrc;
             userImg.onload = function() {
-              // Crop gambar menjadi square (1:1) dengan mengambil bahagian tengah\n              const minDim = Math.min(userImg.width, userImg.height);\n              const sx = (userImg.width - minDim) / 2;\n              const sy = (userImg.height - minDim) / 2;\n              ctx.drawImage(userImg, sx, sy, minDim, minDim, 0, 0, canvas.width, canvas.height);\n              // Lukis semula bingkai sebagai overlay\n              ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);\n            };\n          }\n        };\n      }
+              const minDim = Math.min(userImg.width, userImg.height);
+              const sx = (userImg.width - minDim) / 2;
+              const sy = (userImg.height - minDim) / 2;
+              ctx.drawImage(userImg, sx, sy, minDim, minDim, 0, 0, canvas.width, canvas.height);
+              ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+            };
+          }
+        };
+      }
 
       frameSelect.addEventListener("change", function() {
         drawImageOnCanvas(this.value, null);
       });
 
       fileButton.addEventListener("click", function() {
-        imageUpload.accept = "image/*";
-        imageUpload.removeAttribute("capture");
         imageUpload.click();
       });
 
       captureButton.addEventListener("click", function() {
-        imageUpload.accept = "image/*";
         imageUpload.setAttribute("capture", "environment");
         imageUpload.click();
       });
@@ -174,7 +181,6 @@
         link.click();
       });
 
-      // Lukis bingkai awal
       drawImageOnCanvas(frameSelect.value, null);
     });
   </script>
