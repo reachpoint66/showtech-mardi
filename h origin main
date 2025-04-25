@@ -1,0 +1,41 @@
+[33mcommit 312cb693f592a637f63a7ec1a8f1cd1b494c4589[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Saiful Ubaidi <saifulhamin@gmail.com>
+Date:   Fri Apr 25 17:33:51 2025 +0800
+
+    Replaced old photo frames (rayaframe1 to rayaframe15) with new frames (sm1 to sm5)
+
+[33mcommit 7d2f3e98c3dc409904cc2be0211bf29bc1ce9f47[m
+Author: Saiful Ubaidi <saifulhamin@gmail.com>
+Date:   Sun Mar 30 16:45:57 2025 +0800
+
+    Update rayaframe14.png
+
+[33mcommit f2be8e1f1a87d479f8cc05c7b9ff2e2b93e7f475[m
+Author: Saiful Ubaidi <saifulhamin@gmail.com>
+Date:   Sun Mar 30 01:19:19 2025 +0800
+
+    Update: Add frames 11-15 and update design for frames 1, 4, 10, and 5
+
+[33mcommit 796e5a235ad343805ebd14ba3771dcc110545395[m
+Author: Saiful Ubaidi <saifulhamin@gmail.com>
+Date:   Fri Mar 28 17:26:46 2025 +0800
+
+    Update UI: Tambah frame 1-10, seragamkan butang, adjust text, dan crop gambar 1:1
+
+[33mcommit 6f54a6a7c4053cb961036d738b9e19790f3a02bd[m
+Author: Saiful Ubaidi <saifulhamin@gmail.com>
+Date:   Fri Mar 28 16:18:51 2025 +0800
+
+    Update UI: Add frames 1-10, separate file and camera buttons, and adjust image fit
+
+[33mcommit 3d9a15bebda757938fa845d8708313e0d7a91076[m
+Author: Saiful Ubaidi <saifulhamin@gmail.com>
+Date:   Fri Mar 28 10:45:29 2025 +0800
+
+    Menambah dan mengemas kini photo frame dalam folder assets
+
+[33mcommit 13f3cd80548e016ea4b4cbec77dd51b94079d0e4[m
+Author: Saiful Ubaidi <saifulhamin@gmail.com>
+Date:   Thu Mar 27 15:28:59 2025 +0800
+
+    Update sistem photo frame
